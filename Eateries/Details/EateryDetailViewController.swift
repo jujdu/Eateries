@@ -13,6 +13,7 @@ class EateryDetailViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var rateButton: UIButton!
+    @IBOutlet weak var mapButton: UIButton!
     var restaurant: Restaurant?
     
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
@@ -28,15 +29,18 @@ class EateryDetailViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let buttons = [rateButton, mapButton]
+        for button in buttons {
+            guard let button = button else { break }
+            button.layer.cornerRadius = 5
+            button.layer.borderWidth = 1
+            button.layer.borderColor = UIColor.white.cgColor
+        }
         
         tableView.estimatedRowHeight = 38
         tableView.rowHeight = UITableView.automaticDimension
-        imageView.image = UIImage(named: restaurant!.image)
         
-        rateButton.layer.cornerRadius = 5
-        rateButton.layer.borderWidth = 1
-        rateButton.layer.borderColor = UIColor.white.cgColor
-        
+        imageView.image = UIImage(data: restaurant!.image! as Data)
         
 //        tableView.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
 //        tableView.separatorColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
@@ -80,5 +84,12 @@ class EateryDetailViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "mapSegue" {
+            let dvc = segue.destination as! MapViewController
+            dvc.restauran = self.restaurant
+        }
     }
 }

@@ -27,6 +27,7 @@ class RateViewController: UIViewController {
         default:
             break
         }
+        
         performSegue(withIdentifier: "unwindSegueToDVC", sender: sender)
     }
     
